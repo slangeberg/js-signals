@@ -1,0 +1,48 @@
+<head>
+	<script src="./js-signals.js"></script>
+	<script>
+		var workContextUpdated = new signal();
+		
+		var workContextUpdatedHandler = function(payload) 
+		{
+			console.log( "workContextUpdatedHandler()" );
+			console.dir( payload  );
+		};
+		
+		var workContextUpdatedHandler2 = function(payload) 
+		{
+			console.log( "workContextUpdatedHandler2()" );
+			console.dir( payload  );
+		};
+		
+		workContextUpdated.add( workContextUpdatedHandler );
+		
+		workContextUpdated.add( workContextUpdatedHandler2 );
+		
+		function onButtonClick() {
+			//alert('btnclick');
+			workContextUpdated.dispatch( {clientCode:'BSTN', clientId:1} );
+		}
+		
+		function onButton2Click() {
+			//alert('btnclick');
+			workContextUpdated.dispatch( {clientCode:'MORGANS', clientId:2} );
+		}
+	</script>
+</head>
+<html>
+<body>
+<div id="portlet1" style="background-color: #ff0; width: 150px; height: 70px;">
+	<script>
+		
+	</script>
+	<button type="button" onclick="onButtonClick()">Send Scope 1</button>
+</div>
+<div id="portlet2" style="background-color: #0ff; width: 150px; height: 70px;">
+	<script>
+		
+	</script>	
+	<button type="button" onclick="onButton2Click()">Send Scope 2</button>
+</div>
+</body>
+</html>
