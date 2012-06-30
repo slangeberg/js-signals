@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>QUnit basic example</title>
+  <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-git.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="http://code.jquery.com/qunit/qunit-git.js"></script>
+
+  <script src="js-signals.js"></script>
+
+  <script>
+
+	test( "Dispatch is heard by all listeners", function() {
+      
+		expect( 2 ) // must hit # assertions
+
+		var youTouchedMe = new Signal();
+
+		var youTouchedMeHandler = function(payload)  {
+			equal( payload.say, 'hello', "You said hello" )
+		};
+		youTouchedMe.add( youTouchedMeHandler )
+		
+		youTouchedMe.add( function(touch){
+			equal(touch.say, 'hello', 'You had me at hello')
+		} );
+		
+		youTouchedMe.dispatch( {say:'hello'} )
+    });
+  </script>
+</body>
+</html>
