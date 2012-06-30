@@ -1,48 +1,64 @@
 <head>
 	<script src="./js-signals.js"></script>
-	<script>
-		var workContextUpdated = new signal();
-		
-		var workContextUpdatedHandler = function(payload) 
-		{
-			console.log( "workContextUpdatedHandler()" );
-			console.dir( payload  );
-		};
-		
-		var workContextUpdatedHandler2 = function(payload) 
-		{
-			console.log( "workContextUpdatedHandler2()" );
-			console.dir( payload  );
-		};
-		
-		workContextUpdated.add( workContextUpdatedHandler );
-		
-		workContextUpdated.add( workContextUpdatedHandler2 );
-		
-		function onButtonClick() {
-			//alert('btnclick');
-			workContextUpdated.dispatch( {clientCode:'BSTN', clientId:1} );
-		}
-		
-		function onButton2Click() {
-			//alert('btnclick');
-			workContextUpdated.dispatch( {clientCode:'MORGANS', clientId:2} );
-		}
-	</script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    
+    <style>
+        body {
+            font-size: 10pt;
+            line-height: .8;
+        }
+        
+        .portlet {
+            width: 45%;
+    </style>
 </head>
 <html>
 <body>
-<div id="portlet1" style="background-color: #ff0; width: 150px; height: 70px;">
-	<script>
-		
+<div id="portlet1" class='portlet' style="background-color: #ff0;">
+    <div id='portlet1_content'>...</div>
+	<button id='button1' type="button">Send Scope 1</button>
+</div>
+<div id="portlet2" class='portlet' style="background-color: #0ff;">	
+    <div id='portlet2_content'>...</div>
+	<button id='button2' type="button">Send Scope 2</button>
+</div>
+    <script>
+        (function() {
+    		var workContextUpdated = new Signal();
+    		
+    		var workContextUpdatedHandler = function(payload) 
+    		{
+    			console.log( "workContextUpdatedHandler()" );
+                $("#portlet1_content").append( formatClient( "1", payload ) )
+    			console.dir( payload  );
+    		};
+    		
+    		var workContextUpdatedHandler2 = function(payload) 
+    		{
+    			console.log( "workContextUpdatedHandler2()" );
+                $("#portlet2_content").append( formatClient( "2", payload ) )
+    			console.dir( payload  );
+    		};
+    		
+            var formatClient = function ( handlerId, client ){
+                return "<p><b>handler" + handlerId + "</b>"
+                    + " - received: [clientId: " + client.clientId 
+                    + ", clientCode: " + client.clientCode + "]</p>"
+            }
+            
+    		workContextUpdated.add( workContextUpdatedHandler );
+    		workContextUpdated.add( workContextUpdatedHandler2 );
+    		
+            $('#button1').click( function () {
+    			//alert('btnclick');
+    			workContextUpdated.dispatch( {clientCode:'BSTN', clientId:1} );
+    		} );
+    		
+    		$('#button2').click( function () {
+    			//alert('btnclick');
+    			workContextUpdated.dispatch( {clientCode:'MORGANS', clientId:2} );
+    		} );
+        } )();
 	</script>
-	<button type="button" onclick="onButtonClick()">Send Scope 1</button>
-</div>
-<div id="portlet2" style="background-color: #0ff; width: 150px; height: 70px;">
-	<script>
-		
-	</script>	
-	<button type="button" onclick="onButton2Click()">Send Scope 2</button>
-</div>
 </body>
 </html>

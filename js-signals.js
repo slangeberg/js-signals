@@ -1,4 +1,4 @@
-function signal() 
+function Signal() 
 {
 	this.listeners = [];
 	/**
